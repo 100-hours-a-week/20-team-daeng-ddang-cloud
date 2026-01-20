@@ -120,6 +120,8 @@ resource "aws_instance" "server" {
   ami           = data.aws_ami.ubuntu_2404.id
   instance_type = var.instance_type
 
+  key_name = var.key_name
+
   subnet_id                   = aws_subnet.public.id
   vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
   associate_public_ip_address = true
