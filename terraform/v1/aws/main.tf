@@ -126,6 +126,12 @@ resource "aws_instance" "server" {
   vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
   associate_public_ip_address = true
 
+  root_block_device {
+    volume_size           = var.block_device_volume_size
+    volume_type           = "gp3"
+    delete_on_termination = true
+  }
+
   tags = {
     Name      = "${var.project_name}-server"
     terraform = "true"

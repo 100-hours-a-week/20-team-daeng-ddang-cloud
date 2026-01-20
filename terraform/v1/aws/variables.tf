@@ -33,3 +33,9 @@ variable "instance_type" {
   type        = string
   default     = "t3.micro"
 }
+
+variable "block_device_volume_size" {
+  description = "EBS volume size"
+  type        = number
+  default     = 30
+}
