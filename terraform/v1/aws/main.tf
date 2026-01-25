@@ -1,5 +1,5 @@
 resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.vpc_cidr
   enable_dns_support   = true
   enable_dns_hostnames = true
 
@@ -22,7 +22,7 @@ resource "aws_internet_gateway" "igw" {
 
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
-  cidr_block              = "10.0.101.0/24"
+  cidr_block              = var.public_subnet_cidr
   availability_zone       = var.az
   map_public_ip_on_launch = true
 
@@ -65,7 +65,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # 운영이면 내 IP로 제한 권장
+    cidr_blocks = var.ssh_ingress_cidrs
   }
 
   ingress {
@@ -73,7 +73,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.http_ingress_cidrs
   }
 
   ingress {
@@ -81,7 +81,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.https_ingress_cidrs
   }
 
   egress {
@@ -100,13 +100,13 @@ resource "aws_security_group" "ec2_sg" {
 }
 
 # ==== Latest Ubuntu 24.04 AMI (Seoul) ====
-data "aws_ami" "ubuntu_2404" {
+data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"] # Canonical
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"]
+    values = [var.ubuntu_ami_name_pattern]
   }
 
   filter {
@@ -117,7 +117,7 @@ data "aws_ami" "ubuntu_2404" {
 
 # ==== EC2 ====
 resource "aws_instance" "server" {
-  ami           = data.aws_ami.ubuntu_2404.id
+  ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
 
   key_name = var.key_name
