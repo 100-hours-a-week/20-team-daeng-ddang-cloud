@@ -1,6 +1,6 @@
-output "ec2_public_ip" {
-  description = "Public IP of the EC2 instance"
-  value       = aws_instance.server.public_ip
+output "server_public_ip" {
+  description = "Elastic IP"
+  value = aws_eip.server.public_ip
 }
 
 output "vpc_id" {

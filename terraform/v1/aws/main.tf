@@ -24,7 +24,7 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnet_cidr
   availability_zone       = var.az
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
 
   tags = {
     Name      = "${var.project_name}-public-subnet"
@@ -116,6 +116,20 @@ data "aws_ami" "ubuntu" {
 }
 
 # ==== EC2 ====
+resource "aws_eip" "server" {
+  domain = "vpc"
+
+  tags = {
+    Name      = "${var.project_name}-server-eip"
+    terraform = "true"
+    env       = var.environment
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "aws_instance" "server" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
@@ -124,6 +138,9 @@ resource "aws_instance" "server" {
 
   subnet_id                   = aws_subnet.public.id
   vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
+  
+  # EIP 사용하기 때문에 Public IP 불필요(false)하지만,
+  # 기존에 생성한 인스턴스를 교체하지 않기 위해 true로 유지
   associate_public_ip_address = true
 
   root_block_device {
@@ -137,4 +154,9 @@ resource "aws_instance" "server" {
     terraform = "true"
     env       = var.environment
   }
+}
+
+resource "aws_eip_association" "server" {
+  instance_id   = aws_instance.server.id
+  allocation_id = aws_eip.server.allocation_id
 }
