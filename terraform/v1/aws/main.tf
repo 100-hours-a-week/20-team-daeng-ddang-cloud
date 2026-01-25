@@ -4,7 +4,7 @@ resource "aws_vpc" "main" {
   enable_dns_hostnames = true
 
   tags = merge(local.common_tags, {
-    Name = "${var.project_name}-vpc"
+    Name = "${var.project_name}-${var.environment}-vpc"
   })
 }
 
@@ -12,7 +12,7 @@ resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
   tags = merge(local.common_tags, {
-    Name = "${var.project_name}-igw"
+    Name = "${var.project_name}-${var.environment}-igw"
   })
 }
 
@@ -23,7 +23,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = false
 
   tags = merge(local.common_tags, {
-    Name = "${var.project_name}-public-subnet"
+    Name = "${var.project_name}-${var.environment}-public-subnet"
   })
 }
 
@@ -31,7 +31,7 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
   tags = merge(local.common_tags, {
-    Name = "${var.project_name}-public-route-table"
+    Name = "${var.project_name}-${var.environment}-public-route-table"
   })
 }
 
@@ -48,7 +48,7 @@ resource "aws_route_table_association" "public_assoc" {
 
 # ==== Security Group ====
 resource "aws_security_group" "ec2_sg" {
-  name        = "${var.project_name}-ec2-sg"
+  name        = "${var.project_name}-${var.environment}-ec2-sg"
   description = "EC2 Security Group"
   vpc_id      = aws_vpc.main.id
 
@@ -85,7 +85,7 @@ resource "aws_security_group" "ec2_sg" {
   }
 
   tags = merge(local.common_tags, {
-    Name = "${var.project_name}-ec2-sg"
+    Name = "${var.project_name}-${var.environment}-ec2-sg"
   })
 }
 
@@ -110,7 +110,7 @@ resource "aws_eip" "server" {
   domain = "vpc"
 
   tags = merge(local.common_tags, {
-    Name = "${var.project_name}-server-eip"
+    Name = "${var.project_name}-${var.environment}-server-eip"
   })
 
   lifecycle {
@@ -138,7 +138,7 @@ resource "aws_instance" "server" {
   }
 
   tags = merge(local.common_tags, {
-    Name = "${var.project_name}-server"
+    Name = "${var.project_name}-${var.environment}-server"
   })
 }
 
