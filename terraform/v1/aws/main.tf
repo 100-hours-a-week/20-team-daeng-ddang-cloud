@@ -3,21 +3,17 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = {
-    Name      = "${var.project_name}-vpc"
-    terraform = "true"
-    env       = var.environment
-  }
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-vpc"
+  })
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
-  tags = {
-    Name      = "${var.project_name}-igw"
-    terraform = "true"
-    env       = var.environment
-  }
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-igw"
+  })
 }
 
 resource "aws_subnet" "public" {
@@ -26,21 +22,17 @@ resource "aws_subnet" "public" {
   availability_zone       = var.az
   map_public_ip_on_launch = false
 
-  tags = {
-    Name      = "${var.project_name}-public-subnet"
-    terraform = "true"
-    env       = var.environment
-  }
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-public-subnet"
+  })
 }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
-  tags = {
-    Name      = "${var.project_name}-public-route-table"
-    terraform = "true"
-    env       = var.environment
-  }
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-public-route-table"
+  })
 }
 
 resource "aws_route" "public_internet" {
@@ -92,11 +84,9 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = {
-    Name      = "${var.project_name}-ec2-sg"
-    terraform = "true"
-    env       = var.environment
-  }
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-ec2-sg"
+  })
 }
 
 # ==== Latest Ubuntu 24.04 AMI (Seoul) ====
@@ -119,11 +109,9 @@ data "aws_ami" "ubuntu" {
 resource "aws_eip" "server" {
   domain = "vpc"
 
-  tags = {
-    Name      = "${var.project_name}-server-eip"
-    terraform = "true"
-    env       = var.environment
-  }
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-server-eip"
+  })
 
   lifecycle {
     prevent_destroy = true
@@ -149,11 +137,9 @@ resource "aws_instance" "server" {
     delete_on_termination = true
   }
 
-  tags = {
-    Name      = "${var.project_name}-server"
-    terraform = "true"
-    env       = var.environment
-  }
+  tags = merge(local.common_tags, {
+    Name = "${var.project_name}-server"
+  })
 }
 
 resource "aws_eip_association" "server" {
