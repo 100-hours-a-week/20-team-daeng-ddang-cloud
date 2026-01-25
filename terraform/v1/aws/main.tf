@@ -124,9 +124,9 @@ resource "aws_instance" "server" {
 
   key_name = var.key_name
 
-  subnet_id                   = aws_subnet.public.id
-  vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
-  
+  subnet_id              = aws_subnet.public.id
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
+
   # EIP 사용하기 때문에 Public IP 불필요(false)하지만,
   # 기존에 생성한 인스턴스를 교체하지 않기 위해 true로 유지
   associate_public_ip_address = true

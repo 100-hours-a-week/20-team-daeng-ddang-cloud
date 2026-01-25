@@ -1,6 +1,6 @@
 output "server_public_ip" {
   description = "Elastic IP"
-  value = aws_eip.server.public_ip
+  value       = aws_eip.server.public_ip
 }
 
 output "vpc_id" {
