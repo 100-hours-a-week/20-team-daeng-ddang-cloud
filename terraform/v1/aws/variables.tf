@@ -72,3 +72,33 @@ variable "https_ingress_cidrs" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
+
+# ==== S3 ====
+variable "s3_cors_allowed_origins" {
+  description = "S3 CORS allowed origins"
+  type        = list(string)
+}
+
+variable "s3_cors_allowed_methods" {
+  description = "S3 CORS allowed methods"
+  type        = list(string)
+  default     = ["GET", "HEAD", "PUT", "POST", "DELETE"]
+}
+
+variable "s3_cors_allowed_headers" {
+  description = "S3 CORS allowed headers"
+  type        = list(string)
+  default     = ["*"]
+}
+
+variable "s3_cors_expose_headers" {
+  description = "S3 CORS expose headers"
+  type        = list(string)
+  default     = ["ETag"]
+}
+
+variable "s3_cors_max_age_seconds" {
+  description = "S3 CORS max age seconds"
+  type        = number
+  default     = 3000
+}
