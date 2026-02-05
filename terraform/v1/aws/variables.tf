@@ -3,6 +3,11 @@ variable "environment" {
   type        = string
 }
 
+variable "profile" {
+  description = "profile name (e.g. dev, prod)"
+  type        = string
+  default     = "prod"
+}
 variable "project_name" {
   description = "Project Name"
   type        = string
@@ -55,6 +60,11 @@ variable "ubuntu_ami_name_pattern" {
   default     = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"
 }
 
+variable "ami_id" {
+  description = "Custom AMI ID (if empty, uses latest Ubuntu)"
+  type        = string
+  default     = ""
+}
 # ==== Security Group ingress ====
 variable "ssh_ingress_cidrs" {
   description = "CIDR blocks allowed to SSH"
