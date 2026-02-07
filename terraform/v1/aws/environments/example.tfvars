@@ -1,9 +1,11 @@
+project_name = ""
+
 environment = ""
+profile     = ""
 
 vpc_cidr           = ""
 public_subnet_cidr = ""
-
-instance_type = ""
-key_name      = ""
+az                 = ""
 
 ssh_ingress_cidrs = [""]
+enable_s3         = false
