@@ -51,7 +51,11 @@ variable "bucket_name" {
   default     = "daeng-map"
 }
 
-variable "s3_cors_allowed_origins" { type = list(string) }
+variable "s3_cors_allowed_origins" {
+  type    = list(string)
+  default = []
+}
+
 variable "s3_cors_allowed_methods" {
   type    = list(string)
   default = ["GET", "HEAD", "PUT", "POST", "DELETE"]

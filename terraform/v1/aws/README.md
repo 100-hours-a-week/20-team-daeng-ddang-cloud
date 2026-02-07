@@ -145,8 +145,10 @@ dev 환경 세팅을 기준으로, 명령어를 실행하는 위치는 `terrafor
 ### 5.1. 초기화
 
 ```bash
-terraform init
+terraform init -reconfigure -backend-config=backend-dev.hcl
 ```
+
+> 로컬에서 tfstate를 관리하시려면 `terraform init -backend=false`를 입력하세요.
 
 ### 5.2. 실행 계획 확인
 
@@ -226,11 +228,14 @@ terraform/v1/aws/
 
   stacks/
     base/
+      backend.tf
       provider.tf
       terraform.tf
       main.tf
       variables.tf
       outputs.tf
+      backend-prod.hcl        # ✅ prod state backend config
+      backend-dev.hcl         # ✅ dev state backend config
 
     staging-ephemeral/
       provider.tf
