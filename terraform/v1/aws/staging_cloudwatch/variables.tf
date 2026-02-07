@@ -6,7 +6,7 @@ variable "region" {
 
 variable "environment" {
   description = "Environment tag to filter instances"
-  type = string
-  default = "staging"
+  type        = string
+  default     = "staging"
 }
 

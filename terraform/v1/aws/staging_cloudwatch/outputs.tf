@@ -16,14 +16,14 @@ output "dashboard_url" {
 output "alarm_names" {
   description = "List of created CloudWatch alarm names"
   value = {
-    cpu_high              = [for alarm in aws_cloudwatch_metric_alarm.cpu_high : alarm.alarm_name]
-    memory_high           = [for alarm in aws_cloudwatch_metric_alarm.memory_high : alarm.alarm_name]
-    network_in_high       = [for alarm in aws_cloudwatch_metric_alarm.network_in_high : alarm.alarm_name]
-    network_out_high      = [for alarm in aws_cloudwatch_metric_alarm.network_out_high : alarm.alarm_name]
-    ebs_read_iops_high    = [for alarm in aws_cloudwatch_metric_alarm.ebs_read_iops_high : alarm.alarm_name]
-    ebs_write_iops_high   = [for alarm in aws_cloudwatch_metric_alarm.ebs_write_iops_high : alarm.alarm_name]
-    ebs_read_throughput   = [for alarm in aws_cloudwatch_metric_alarm.ebs_read_throughput_high : alarm.alarm_name]
-    ebs_write_throughput  = [for alarm in aws_cloudwatch_metric_alarm.ebs_write_throughput_high : alarm.alarm_name]
-    disk_used_high        = [for alarm in aws_cloudwatch_metric_alarm.disk_used_high : alarm.alarm_name]
+    cpu_high             = [for alarm in aws_cloudwatch_metric_alarm.cpu_high : alarm.alarm_name]
+    memory_high          = [for alarm in aws_cloudwatch_metric_alarm.memory_high : alarm.alarm_name]
+    network_in_high      = [for alarm in aws_cloudwatch_metric_alarm.network_in_high : alarm.alarm_name]
+    network_out_high     = [for alarm in aws_cloudwatch_metric_alarm.network_out_high : alarm.alarm_name]
+    ebs_read_iops_high   = [for alarm in aws_cloudwatch_metric_alarm.ebs_read_iops_high : alarm.alarm_name]
+    ebs_write_iops_high  = [for alarm in aws_cloudwatch_metric_alarm.ebs_write_iops_high : alarm.alarm_name]
+    ebs_read_throughput  = [for alarm in aws_cloudwatch_metric_alarm.ebs_read_throughput_high : alarm.alarm_name]
+    ebs_write_throughput = [for alarm in aws_cloudwatch_metric_alarm.ebs_write_throughput_high : alarm.alarm_name]
+    disk_used_high       = [for alarm in aws_cloudwatch_metric_alarm.disk_used_high : alarm.alarm_name]
   }
 }
