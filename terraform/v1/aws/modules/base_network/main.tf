@@ -3,36 +3,36 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-${var.environment}-vpc"
-  })
+  }
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-${var.environment}-igw"
-  })
+  }
 }
 
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnet_cidr
   availability_zone       = var.az
-  map_public_ip_on_launch = false
+  map_public_ip_on_launch = var.public_subnet_map_public_ip_on_launch
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-${var.environment}-public-subnet"
-  })
+  }
 }
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-${var.environment}-public-route-table"
-  })
+  }
 }
 
 resource "aws_route" "public_internet" {
@@ -46,7 +46,6 @@ resource "aws_route_table_association" "public_assoc" {
   route_table_id = aws_route_table.public.id
 }
 
-# ==== Security Group ====
 resource "aws_security_group" "ec2_sg" {
   name        = "${var.project_name}-${var.environment}-ec2-sg"
   description = "EC2 Security Group"
@@ -84,65 +83,7 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = merge(local.common_tags, {
+  tags = {
     Name = "${var.project_name}-${var.environment}-ec2-sg"
-  })
-}
-
-# ==== Latest Ubuntu 24.04 AMI (Seoul) ====
-data "aws_ami" "ubuntu" {
-  most_recent = true
-  owners      = ["099720109477"] # Canonical
-
-  filter {
-    name   = "name"
-    values = [var.ubuntu_ami_name_pattern]
   }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
-# ==== EC2 ====
-resource "aws_eip" "server" {
-  domain = "vpc"
-
-  tags = merge(local.common_tags, {
-    Name = "${var.project_name}-${var.environment}-server-eip"
-  })
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "aws_instance" "server" {
-  ami           = var.ami_id != "" ? var.ami_id : data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
-
-  key_name = var.key_name
-
-  subnet_id              = aws_subnet.public.id
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
-
-  # EIP 사용하기 때문에 Public IP 불필요(false)하지만,
-  # 기존에 생성한 인스턴스를 교체하지 않기 위해 true로 유지
-  associate_public_ip_address = true
-
-  root_block_device {
-    volume_size           = var.block_device_volume_size
-    volume_type           = "gp3"
-    delete_on_termination = true
-  }
-
-  tags = merge(local.common_tags, {
-    Name = "${var.project_name}-${var.environment}-server"
-  })
-}
-
-resource "aws_eip_association" "server" {
-  instance_id   = aws_instance.server.id
-  allocation_id = aws_eip.server.allocation_id
 }
