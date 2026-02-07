@@ -47,11 +47,6 @@ variable "app_ingress_cidrs" {
   default = ["0.0.0.0/0"]
 }
 
-# base remote state 위치 (CI에서 주입)
-variable "base_state_bucket" { type = string }
-variable "base_state_key" { type = string }
-variable "base_state_region" { type = string }
-
 # EC2
 variable "key_name" {
   description = "optional. CI만 쓰면 비워도 됨"
