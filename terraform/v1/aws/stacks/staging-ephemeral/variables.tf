@@ -67,7 +67,6 @@ variable "ubuntu_ami_name_pattern" {
 
 variable "ami_id" {
   type    = string
-  default = ""
 }
 
 # staging에서는 기본적으로 EIP 금지 (destroy 목적)
