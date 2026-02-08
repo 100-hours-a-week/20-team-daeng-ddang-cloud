@@ -23,9 +23,8 @@ variable "ubuntu_ami_name_pattern" {
 }
 
 variable "ami_id" {
-  description = "Custom AMI ID (if empty, uses latest Ubuntu)"
+  description = "Custom AMI ID"
   type        = string
-  default     = ""
 }
 
 # EIP 옵션화 (staging-ephemeral에서는 false 권장)
