@@ -1,3 +1,4 @@
+import WebSocket from "ws";
 import { Client } from "@stomp/stompjs";
 import fs from "node:fs";
 import path from "node:path";
@@ -275,6 +276,7 @@ async function runWebSocketFlow({ idx, userId, token, walkId }, agg) {
 
     const client = new Client({
       brokerURL: WS_URL,
+      webSocketFactory: () => new WebSocket(WS_URL),
       reconnectDelay: 0,
 
       connectHeaders: {
