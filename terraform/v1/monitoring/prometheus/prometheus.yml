@@ -1,0 +1,34 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'node'
+    static_configs:
+      - targets:
+          - # - 'monitoring_server:9100"
+          - '{prod_IP}:9100'   # 배포 서버 IP로 수정 필요
+          - '{dev_IP}:9100'  # 개발 서버 IP로 수정 필요
+
+  - job_name: 'postgres'
+    static_configs:
+      - targets:
+        # - 'monitoring_server:9187"
+          - '{prod_IP}:9187'   # 배포 서버 IP로 수정 필요
+          - '{dev_IP}:9187'  # 개발 서버 IP로 수정 필요
+
+  - job_name: 'app'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets:
+          - '{prod_IP}:8080'   # 배포 서버 IP로 수정 필요
+          - '{dev_IP}}:8080'  # 개발 서버 IP로 수정 필요
+  - job_name: 'caddy'
+    static_configs:
+      - targets:
+          - '{prod_IP}}:2019' # 배포 서버 IP로 수정 필요
+          - '{dev_IP}:2019' # 개발 서버 IP로 수정 필요
