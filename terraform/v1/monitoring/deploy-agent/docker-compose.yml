@@ -1,0 +1,50 @@
+services:
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./promtail-config.yml:/etc/promtail/config.yml
+      - /var/log:/var/log:ro
+      # 애플리케이션 로그 경로
+      - /var/log/caddy:/var/log/caddy:ro
+      - /var/log/daengdong:/var/log/daengdong:ro
+      - /home/ubuntu/.pm2/logs:/app/nextjs-logs:ro
+    command: -config.file=/etc/promtail/config.yml
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 50M
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: postgres-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${DB_USERNAME}:${DB_PASSWORD}@host.docker.internal:5432/${DB_NAME}?sslmode=disable"
+    ports:
+      - "9187:9187"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 50M

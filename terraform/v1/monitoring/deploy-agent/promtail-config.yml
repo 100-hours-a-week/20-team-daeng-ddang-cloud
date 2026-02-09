@@ -1,0 +1,68 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  # 모니터링 서버 IP로 변경 필요
+  - url: http://3.39.215.108:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          host: ${HOSTNAME}
+          __path__: /var/log/*log
+
+  - job_name: syslog
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: syslog
+          host: ${HOSTNAME}
+          __path__: /var/log/syslog
+
+  - job_name: caddy
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: caddy
+          host: ${HOSTNAME}
+          __path__: /var/log/caddy/*.log
+
+  - job_name: spring_log
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: spring_log
+          host: ${HOSTNAME}
+          __path__: /var/log/daengdong/*.log
+
+  - job_name: spring-error
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: daengdong
+          level: error
+          host: ${HOSTNAME}
+          __path__: /var/log/daengdong/*-error.log
+
+
+
+  - job_name: nextjs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: nextjs
+          host: ${HOSTNAME}
+          __path__: /app/nextjs-logs/*.log
