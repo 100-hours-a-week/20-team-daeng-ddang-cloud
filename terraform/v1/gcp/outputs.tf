@@ -35,5 +35,5 @@ output "vpc_name" {
 
 output "subnet_cidr" {
   description = "서브넷 CIDR"
-  value       = google_compute_subnetwork.subnet.ip_cidr_range
+  value       = google_compute_subnetwork.public-subnet.ip_cidr_range
 }
