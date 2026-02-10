@@ -78,6 +78,28 @@ resource "aws_subnet" "private" {
 }
 
 ##############################
+# DB Subnets (멀티 AZ)
+##############################
+resource "aws_subnet" "db" {
+  count = length(var.db_subnet_cidrs)
+
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = var.db_subnet_cidrs[count.index]
+  availability_zone = var.azs[count.index]
+
+  tags = {
+    Name = "${var.project_name}-${var.environment}-db-subnet-${var.azs[count.index]}"
+  }
+}
+
+resource "aws_route_table_association" "db" {
+  count = length(var.db_subnet_cidrs)
+
+  subnet_id      = aws_subnet.db[count.index].id
+  route_table_id = aws_route_table.private.id
+}
+
+##############################
 # NAT Gateway (조건부)
 ##############################
 resource "aws_eip" "nat" {

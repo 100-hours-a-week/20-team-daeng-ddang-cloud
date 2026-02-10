@@ -22,6 +22,11 @@ variable "private_subnet_cidrs" {
   type        = list(string)
 }
 
+variable "db_subnet_cidrs" {
+  description = "DB subnet CIDR blocks (AZ 수와 동일)"
+  type        = list(string)
+}
+
 variable "enable_nat_gw" {
   description = "NAT Gateway 생성 여부 (dev: false 권장, prod: true)"
   type        = bool
