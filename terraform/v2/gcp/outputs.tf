@@ -1,5 +1,3 @@
-
-# VM 정보 출력
 output "vm_name" {
   description = "VM 이름"
   value       = google_compute_instance.vm.name
@@ -15,19 +13,16 @@ output "vm_external_ip" {
   value       = google_compute_instance.vm.network_interface[0].access_config[0].nat_ip
 }
 
-# SSH 접속 명령어
 output "ssh_command" {
   description = "SSH 접속 명령어"
   value       = "gcloud compute ssh ${google_compute_instance.vm.name} --zone=${var.zone}"
 }
 
-# 웹 접속 URL
 output "web_url" {
   description = "웹 접속 URL"
   value       = "http://${google_compute_instance.vm.network_interface[0].access_config[0].nat_ip}"
 }
 
-# 네트워크 정보
 output "vpc_name" {
   description = "VPC 이름"
   value       = google_compute_network.vpc.name
@@ -36,4 +31,19 @@ output "vpc_name" {
 output "subnet_cidr" {
   description = "서브넷 CIDR"
   value       = google_compute_subnetwork.public-subnet.ip_cidr_range
+}
+
+output "gemini_api_key_secret_id" {
+  description = "GEMINI_API_KEY Secret ID"
+  value       = google_secret_manager_secret.gemini_api_key.id
+}
+
+output "hf_token_secret_id" {
+  description = "HF_TOKEN Secret ID"
+  value       = google_secret_manager_secret.hf_token.id
+}
+
+output "service_account_email" {
+  description = "Secret에 접근 가능한 서비스 계정"
+  value       = data.google_compute_default_service_account.default.email
 }
