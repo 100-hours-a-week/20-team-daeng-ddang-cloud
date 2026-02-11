@@ -59,6 +59,12 @@ variable "multi_az" {
   default = false
 }
 
+variable "availability_zone" {
+  description = "Single AZ 배치 시 사용할 가용 영역"
+  type        = string
+  default     = null
+}
+
 # Backup & Protection
 variable "backup_retention_period" {
   type    = number
