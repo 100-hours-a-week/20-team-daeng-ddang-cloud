@@ -38,3 +38,9 @@ variable "redis_port" {
   type    = number
   default = 6379
 }
+
+variable "preferred_cache_cluster_azs" {
+  description = "캐시 클러스터 배치 가용 영역"
+  type        = list(string)
+  default     = null
+}

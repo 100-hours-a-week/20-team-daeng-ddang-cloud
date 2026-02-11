@@ -48,9 +48,10 @@ resource "aws_elasticache_replication_group" "main" {
   engine               = "redis"
   engine_version       = var.engine_version
   node_type            = var.node_type
-  num_cache_clusters   = var.num_cache_clusters
-  parameter_group_name = var.parameter_group_name
-  port                 = var.redis_port
+  num_cache_clusters              = var.num_cache_clusters
+  parameter_group_name            = var.parameter_group_name
+  port                            = var.redis_port
+  preferred_cache_cluster_azs     = var.preferred_cache_cluster_azs
 
   subnet_group_name  = aws_elasticache_subnet_group.main.name
   security_group_ids = [aws_security_group.redis.id]
