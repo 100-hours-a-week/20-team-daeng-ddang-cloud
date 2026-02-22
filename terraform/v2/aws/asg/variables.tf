@@ -33,6 +33,12 @@ variable "app_port" {
   default = 8080
 }
 
+variable "additional_app_ports" {
+  description = "ALB에서 접근 허용할 추가 포트 목록"
+  type        = list(number)
+  default     = []
+}
+
 variable "ssh_ingress_cidrs" {
   type    = list(string)
   default = []
