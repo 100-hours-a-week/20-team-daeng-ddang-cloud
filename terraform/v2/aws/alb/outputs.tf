@@ -17,3 +17,7 @@ output "be_target_group_arn" {
 output "fe_target_group_arn" {
   value = aws_lb_target_group.frontend.arn
 }
+
+output "fe_target_group_2_arn" {
+  value = aws_lb_target_group.frontend_2.arn
+}

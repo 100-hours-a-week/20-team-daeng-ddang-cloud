@@ -14,6 +14,17 @@ resource "aws_security_group" "asg" {
     security_groups = [var.alb_sg_id]
   }
 
+  dynamic "ingress" {
+    for_each = var.additional_app_ports
+    content {
+      description     = "App from ALB (port ${ingress.value})"
+      from_port       = ingress.value
+      to_port         = ingress.value
+      protocol        = "tcp"
+      security_groups = [var.alb_sg_id]
+    }
+  }
+
   ingress {
     description = "SSH"
     from_port   = 22
@@ -126,7 +137,9 @@ resource "aws_autoscaling_group" "main" {
   max_size         = var.max_size
   desired_capacity = var.desired_capacity
 
-  health_check_type         = "ELB"
+  // CI-CD 만들고 난 후 ELB로 변경하기
+  //health_check_type         = "ELB"
+  health_check_type         = "EC2"
   health_check_grace_period = 300
 
   launch_template {
