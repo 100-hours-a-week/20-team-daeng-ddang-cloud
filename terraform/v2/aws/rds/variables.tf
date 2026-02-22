@@ -5,9 +5,37 @@ variable "environment" { type = string }
 variable "vpc_id" { type = string }
 variable "private_subnet_ids" { type = list(string) }
 
+# Naming
+variable "db_identifier" {
+  description = "RDS instance identifier"
+  type        = string
+}
+
+variable "db_subnet_group_name" {
+  description = "DB Subnet Group name"
+  type        = string
+}
+
+variable "db_subnet_group_description" {
+  description = "DB Subnet Group description"
+  type        = string
+  default     = "Managed by Terraform"
+}
+
+variable "rds_sg_name" {
+  description = "RDS Security Group name"
+  type        = string
+}
+
 # SG
 variable "allowed_security_group_ids" {
   description = "RDS 접근을 허용할 SG ID 목록 (ASG SG 등)"
+  type        = list(string)
+  default     = []
+}
+
+variable "additional_security_group_ids" {
+  description = "RDS에 추가로 연결할 Security Group ID 목록"
   type        = list(string)
   default     = []
 }
@@ -40,17 +68,33 @@ variable "max_allocated_storage" {
 }
 
 # DB
-variable "db_name" { type = string }
-variable "db_username" { type = string }
-
-variable "db_password" {
-  type      = string
-  sensitive = true
+variable "db_name" {
+  type    = string
+  default = null
 }
+variable "db_username" { type = string }
 
 variable "db_port" {
   type    = number
   default = 5432
+}
+
+# Encryption
+variable "storage_encrypted" {
+  type    = bool
+  default = true
+}
+
+variable "kms_key_id" {
+  description = "KMS key ARN for RDS encryption"
+  type        = string
+  default     = null
+}
+
+# Performance Insights
+variable "performance_insights_enabled" {
+  type    = bool
+  default = true
 }
 
 # HA
