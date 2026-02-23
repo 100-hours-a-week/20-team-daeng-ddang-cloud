@@ -16,6 +16,12 @@ variable "fe_app_port" {
   default = 3000
 }
 
+variable "fe_app_port_2" {
+  description = "FE 두 번째 컨테이너 포트"
+  type        = number
+  default     = 3001
+}
+
 variable "be_health_check_path" {
   type    = string
   default = "api/v3/health"

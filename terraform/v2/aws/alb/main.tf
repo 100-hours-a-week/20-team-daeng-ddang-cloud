@@ -98,6 +98,29 @@ resource "aws_lb_target_group" "frontend" {
   }
 }
 
+resource "aws_lb_target_group" "frontend_2" {
+  name     = "${var.project_name}-${var.environment}-fe-tg-2"
+  port     = var.fe_app_port_2
+  protocol = "HTTP"
+  vpc_id   = var.vpc_id
+
+  health_check {
+    enabled             = true
+    path                = var.fe_health_check_path
+    port                = "traffic-port"
+    protocol            = "HTTP"
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
+    timeout             = 5
+    interval            = 30
+    matcher             = "200"
+  }
+
+  tags = {
+    Name = "${var.project_name}-${var.environment}-fe-tg-2"
+  }
+}
+
 ##############################
 # Listener
 ##############################
@@ -106,10 +129,21 @@ resource "aws_lb_listener" "http" {
   port              = 80
   protocol          = "HTTP"
 
-  # 기본: frontend로 전달
+  # 기본: frontend 두 TG에 50:50 분배
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.frontend.arn
+    type = "forward"
+
+    forward {
+      target_group {
+        arn    = aws_lb_target_group.frontend.arn
+        weight = 50
+      }
+
+      target_group {
+        arn    = aws_lb_target_group.frontend_2.arn
+        weight = 50
+      }
+    }
   }
 }
 
