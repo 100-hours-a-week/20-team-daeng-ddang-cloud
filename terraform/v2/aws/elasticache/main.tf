@@ -48,6 +48,7 @@ resource "aws_elasticache_replication_group" "main" {
   engine               = "redis"
   engine_version       = var.engine_version
   node_type            = var.node_type
+
   num_cache_clusters              = var.num_cache_clusters
   parameter_group_name            = var.parameter_group_name
   port                            = var.redis_port
@@ -57,6 +58,11 @@ resource "aws_elasticache_replication_group" "main" {
   security_group_ids = [aws_security_group.redis.id]
 
   automatic_failover_enabled = var.num_cache_clusters > 1 ? true : false
+
+  transit_encryption_enabled = var.transit_encryption_enabled
+  at_rest_encryption_enabled = var.at_rest_encryption_enabled
+  auth_token = var.transit_encryption_enabled ? var.auth_token : null
+  auth_token_update_strategy = var.auth_token_update_strategy
 
   lifecycle {
     ignore_changes = [auth_token_update_strategy]

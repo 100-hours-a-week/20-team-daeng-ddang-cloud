@@ -148,4 +148,9 @@ module "elasticache" {
   preferred_cache_cluster_azs     = [var.azs[0]]
 
   allowed_security_group_ids = [module.be_asg.asg_sg_id]
+
+  transit_encryption_enabled = var.redis_transit_encryption_enabled
+  at_rest_encryption_enabled = var.redis_at_rest_encryption_enabled
+
+  auth_token = var.redis_transit_encryption_enabled ? var.redis_auth_token : null
 }

@@ -253,3 +253,18 @@ variable "redis_num_cache_clusters" {
   type    = number
   default = 1
 }
+
+variable "redis_transit_encryption_enabled" {
+  type = bool
+  default = true
+}
+
+variable "redis_at_rest_encryption_enabled" {
+  type = bool
+  default = true
+}
+
+variable "redis_auth_token" {
+  type = string
+  default = "null"
+}
