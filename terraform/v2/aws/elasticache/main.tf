@@ -45,14 +45,14 @@ resource "aws_elasticache_replication_group" "main" {
   replication_group_id = "${var.project_name}-${var.environment}-redis"
   description          = "${var.project_name} ${var.environment} Redis"
 
-  engine               = "redis"
-  engine_version       = var.engine_version
-  node_type            = var.node_type
+  engine         = "redis"
+  engine_version = var.engine_version
+  node_type      = var.node_type
 
-  num_cache_clusters              = var.num_cache_clusters
-  parameter_group_name            = var.parameter_group_name
-  port                            = var.redis_port
-  preferred_cache_cluster_azs     = var.preferred_cache_cluster_azs
+  num_cache_clusters          = var.num_cache_clusters
+  parameter_group_name        = var.parameter_group_name
+  port                        = var.redis_port
+  preferred_cache_cluster_azs = var.preferred_cache_cluster_azs
 
   subnet_group_name  = aws_elasticache_subnet_group.main.name
   security_group_ids = [aws_security_group.redis.id]
@@ -61,7 +61,7 @@ resource "aws_elasticache_replication_group" "main" {
 
   transit_encryption_enabled = var.transit_encryption_enabled
   at_rest_encryption_enabled = var.at_rest_encryption_enabled
-  auth_token = var.transit_encryption_enabled ? var.auth_token : null
+  auth_token                 = var.transit_encryption_enabled ? var.auth_token : null
   auth_token_update_strategy = var.auth_token_update_strategy
 
   lifecycle {

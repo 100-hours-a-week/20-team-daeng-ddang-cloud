@@ -31,26 +31,26 @@ variable "num_cache_clusters" {
 
 variable "transit_encryption_enabled" {
   description = "redis 네트워크로 오가는 데이터(TLS) 보호"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "at_rest_encryption_enabled" {
   description = "redis 저장되는 데이터(백업/스냅샷/디스크) 보호"
-  type = bool
-  default = false
+  type        = bool
+  default     = false
 }
 
 variable "auth_token" {
   description = "redis 비밀번호"
-  type = string
-  default = "ROTATE"
+  type        = string
+  default     = "ROTATE"
 }
 
 variable "auth_token_update_strategy" {
   description = "redis 토큰 변경"
-  type = string
-  default = null
+  type        = string
+  default     = null
 }
 
 variable "parameter_group_name" {

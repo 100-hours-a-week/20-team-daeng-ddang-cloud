@@ -255,16 +255,16 @@ variable "redis_num_cache_clusters" {
 }
 
 variable "redis_transit_encryption_enabled" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "redis_at_rest_encryption_enabled" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "redis_auth_token" {
-  type = string
+  type    = string
   default = "null"
 }
