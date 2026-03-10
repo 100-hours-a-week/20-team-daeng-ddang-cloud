@@ -65,6 +65,16 @@ module "be_asg" {
   monitoring_ingress_cidrs = var.monitoring_ingress_cidrs
   user_data                = base64encode(file("${path.module}/scripts/user_data.sh"))
 
+  additional_cidr_ingress_rules = [
+    {
+      description = "HTTPS"
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+
   min_size         = var.be_asg_min_size
   max_size         = var.be_asg_max_size
   desired_capacity = var.be_asg_desired_capacity
@@ -148,4 +158,117 @@ module "elasticache" {
   preferred_cache_cluster_azs     = [var.azs[0]]
 
   allowed_security_group_ids = [module.be_asg.asg_sg_id]
+}
+
+##############################
+# CloudWatch Dashboard
+##############################
+resource "aws_cloudwatch_dashboard" "asg" {
+  dashboard_name = "${var.project_name}-${var.environment}-asg"
+
+  dashboard_body = jsonencode({
+    widgets = [
+      # Row 1: CPU Utilization
+      {
+        type   = "metric"
+        x      = 0
+        y      = 0
+        width  = 12
+        height = 6
+        properties = {
+          title  = "BE - CPU Utilization"
+          region = "ap-northeast-2"
+          metrics = [
+            ["AWS/EC2", "CPUUtilization", "AutoScalingGroupName", module.be_asg.asg_name, { stat = "Average" }]
+          ]
+          period = 300
+          view   = "timeSeries"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 12
+        y      = 0
+        width  = 12
+        height = 6
+        properties = {
+          title  = "FE - CPU Utilization"
+          region = "ap-northeast-2"
+          metrics = [
+            ["AWS/EC2", "CPUUtilization", "AutoScalingGroupName", module.fe_asg.asg_name, { stat = "Average" }]
+          ]
+          period = 300
+          view   = "timeSeries"
+        }
+      },
+      # Row 2: Network In/Out
+      {
+        type   = "metric"
+        x      = 0
+        y      = 6
+        width  = 12
+        height = 6
+        properties = {
+          title  = "BE - Network In/Out"
+          region = "ap-northeast-2"
+          metrics = [
+            ["AWS/EC2", "NetworkIn", "AutoScalingGroupName", module.be_asg.asg_name, { stat = "Average" }],
+            ["AWS/EC2", "NetworkOut", "AutoScalingGroupName", module.be_asg.asg_name, { stat = "Average" }]
+          ]
+          period = 300
+          view   = "timeSeries"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 12
+        y      = 6
+        width  = 12
+        height = 6
+        properties = {
+          title  = "FE - Network In/Out"
+          region = "ap-northeast-2"
+          metrics = [
+            ["AWS/EC2", "NetworkIn", "AutoScalingGroupName", module.fe_asg.asg_name, { stat = "Average" }],
+            ["AWS/EC2", "NetworkOut", "AutoScalingGroupName", module.fe_asg.asg_name, { stat = "Average" }]
+          ]
+          period = 300
+          view   = "timeSeries"
+        }
+      },
+      # Row 3: InService Instances
+      {
+        type   = "metric"
+        x      = 0
+        y      = 12
+        width  = 12
+        height = 6
+        properties = {
+          title  = "BE - InService Instances"
+          region = "ap-northeast-2"
+          metrics = [
+            ["AWS/AutoScaling", "GroupInServiceInstances", "AutoScalingGroupName", module.be_asg.asg_name, { stat = "Average" }]
+          ]
+          period = 300
+          view   = "timeSeries"
+        }
+      },
+      {
+        type   = "metric"
+        x      = 12
+        y      = 12
+        width  = 12
+        height = 6
+        properties = {
+          title  = "FE - InService Instances"
+          region = "ap-northeast-2"
+          metrics = [
+            ["AWS/AutoScaling", "GroupInServiceInstances", "AutoScalingGroupName", module.fe_asg.asg_name, { stat = "Average" }]
+          ]
+          period = 300
+          view   = "timeSeries"
+        }
+      }
+    ]
+  })
 }
