@@ -59,7 +59,7 @@ resource "aws_elasticache_replication_group" "main" {
   automatic_failover_enabled = var.num_cache_clusters > 1 ? true : false
 
   lifecycle {
-    ignore_changes = [auth_token_update_strategy]
+    ignore_changes = [auth_token, auth_token_update_strategy]
   }
 
   tags = {

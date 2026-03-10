@@ -50,6 +50,18 @@ variable "monitoring_ingress_cidrs" {
   default     = []
 }
 
+variable "additional_cidr_ingress_rules" {
+  description = "추가 CIDR 기반 인그레스 규칙"
+  type = list(object({
+    description = string
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = []
+}
+
 # User Data
 variable "user_data" {
   description = "Base64 인코딩된 사용자 스크립트"

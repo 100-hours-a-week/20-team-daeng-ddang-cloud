@@ -41,6 +41,17 @@ resource "aws_security_group" "asg" {
     cidr_blocks = var.monitoring_ingress_cidrs
   }
 
+  dynamic "ingress" {
+    for_each = var.additional_cidr_ingress_rules
+    content {
+      description = ingress.value.description
+      from_port   = ingress.value.from_port
+      to_port     = ingress.value.to_port
+      protocol    = ingress.value.protocol
+      cidr_blocks = ingress.value.cidr_blocks
+    }
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -123,6 +134,10 @@ resource "aws_launch_template" "main" {
       Name = "${var.project_name}-${var.environment}-server"
     }
   }
+
+  lifecycle {
+    ignore_changes = [description, user_data]
+  }
 }
 
 ##############################
@@ -138,8 +153,8 @@ resource "aws_autoscaling_group" "main" {
   desired_capacity = var.desired_capacity
 
   // CI-CD 만들고 난 후 ELB로 변경하기
-  //health_check_type         = "ELB"
-  health_check_type         = "EC2"
+  health_check_type         = "ELB"
+  //health_check_type         = "EC2"
   health_check_grace_period = 300
 
   launch_template {
