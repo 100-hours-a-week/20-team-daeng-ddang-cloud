@@ -54,10 +54,10 @@ resource "aws_db_instance" "main" {
   storage_encrypted     = var.storage_encrypted
   kms_key_id            = var.kms_key_id
 
-  db_name                    = var.db_name
-  username                   = var.db_username
+  db_name                     = var.db_name
+  username                    = var.db_username
   manage_master_user_password = true
-  port                       = var.db_port
+  port                        = var.db_port
 
   db_subnet_group_name   = aws_db_subnet_group.main.name
   vpc_security_group_ids = concat([aws_security_group.rds.id], var.additional_security_group_ids)

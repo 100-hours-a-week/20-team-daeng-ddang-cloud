@@ -32,10 +32,10 @@ module "network" {
 module "alb" {
   source = "../../alb"
 
-  project_name         = var.project_name
-  environment          = var.environment
-  vpc_id               = module.network.vpc_id
-  public_subnet_ids    = module.network.public_subnet_ids
+  project_name      = var.project_name
+  environment       = var.environment
+  vpc_id            = module.network.vpc_id
+  public_subnet_ids = module.network.public_subnet_ids
 
   be_app_port          = var.be_app_port
   fe_app_port          = var.fe_app_port
@@ -152,12 +152,17 @@ module "elasticache" {
   vpc_id             = module.network.vpc_id
   private_subnet_ids = length(var.db_subnet_ids_override) > 0 ? var.db_subnet_ids_override : module.network.db_subnet_ids
 
-  engine_version                  = var.redis_engine_version
-  node_type                       = var.redis_node_type
-  num_cache_clusters              = var.redis_num_cache_clusters
-  preferred_cache_cluster_azs     = [var.azs[0]]
+  engine_version              = var.redis_engine_version
+  node_type                   = var.redis_node_type
+  num_cache_clusters          = var.redis_num_cache_clusters
+  preferred_cache_cluster_azs = [var.azs[0]]
 
   allowed_security_group_ids = [module.be_asg.asg_sg_id]
+
+  transit_encryption_enabled = var.redis_transit_encryption_enabled
+  at_rest_encryption_enabled = var.redis_at_rest_encryption_enabled
+
+  auth_token = var.redis_transit_encryption_enabled ? var.redis_auth_token : null
 }
 
 ##############################
