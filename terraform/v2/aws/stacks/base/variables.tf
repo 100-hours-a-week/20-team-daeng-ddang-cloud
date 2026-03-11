@@ -59,7 +59,7 @@ variable "be_health_check_path" {
 
 variable "fe_health_check_path" {
   type    = string
-  default = "/health"
+  default = "/healthcheck"
 }
 
 variable "be_path_patterns" {
