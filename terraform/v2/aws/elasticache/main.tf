@@ -65,7 +65,7 @@ resource "aws_elasticache_replication_group" "main" {
   auth_token_update_strategy = var.auth_token_update_strategy
 
   lifecycle {
-    ignore_changes = [auth_token_update_strategy]
+    ignore_changes = [auth_token, auth_token_update_strategy]
   }
 
   tags = {
