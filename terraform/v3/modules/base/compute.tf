@@ -24,6 +24,10 @@ resource "aws_instance" "control_plane" {
     ${templatefile("${path.module}/userdata-control-plane.sh.tpl", {})}
   EOF
 
+lifecycle {
+  ignore_changes = [user_data]
+}
+
 tags = merge(local.common_tags, {
   Name = local.control_plane_names[count.index]
   Role = "control-plane"
@@ -53,6 +57,10 @@ resource "aws_instance" "worker" {
 })}
     ${templatefile("${path.module}/userdata-worker.sh.tpl", {})}
   EOF
+
+lifecycle {
+  ignore_changes = [user_data]
+}
 
 tags = merge(local.common_tags, {
   Name = local.worker_names[count.index]
