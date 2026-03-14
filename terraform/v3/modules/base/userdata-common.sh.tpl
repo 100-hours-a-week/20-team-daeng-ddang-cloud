@@ -47,7 +47,7 @@ apt-get install -y containerd apt-transport-https ca-certificates curl gnupg
 mkdir -p /etc/containerd
 containerd config default | tee /etc/containerd/config.toml
 sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
-sed -i 's#sandbox_image = "registry.k8s.io/pause:3.8"#sandbox_image = "registry.k8s.io/pause:3.9"#' /etc/containerd/config.toml
+sed -i 's#sandbox_image = ".*"#sandbox_image = "registry.k8s.io/pause:3.10"#' /etc/containerd/config.toml
 
 systemctl restart containerd
 systemctl enable containerd
@@ -68,7 +68,7 @@ chmod 644 /etc/apt/sources.list.d/kubernetes.list
 
 # 8. 쿠버네티스 도구 설치
 apt-get update -y
-apt-get install -y kubelet kubeadm
-apt-mark hold kubelet kubeadm
+apt-get install -y kubelet kubeadm kubectl
+apt-mark hold kubelet kubeadm kubectl
 
 systemctl enable --now kubelet
