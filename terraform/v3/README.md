@@ -2,12 +2,41 @@
 
 ## 개요
 
+```
+Internet
+   │
+   ▼
+Public NLB
+(Envoy Gateway용, 자동 생성)
+   │
+   ▼
+Worker Node ASG
+   │
+   ▼
+Envoy Gateway
+   ├─ daeng-map.store/api → backend Service → backend Pods
+   ├─ daeng-map.store/ws  → backend Service → backend Pods
+   └─ daeng-map.store     → frontend Service → frontend Pods
+
+
+cp2 / cp3 / Worker Nodes
+   │
+   ▼
+Internal NLB (:6443)
+(Control Plane Endpoint)
+   │
+   ▼
+cp1 / cp2 / cp3
+```
+
 - kubeadm 기반 Kubernetes 클러스터 인프라를 구성하기 위한 Terraform 코드
 - 인프라 프로비저닝까지만 담당하며 다음 항목은 수동으로 진행한다.
   - kubeadm init
   - Calico 설치
   - kube-proxy ipvs 적용
   - control plane join
+
+<br>
 
 ### 실행 흐름
 
@@ -41,6 +70,9 @@ worker ASG desired를 3으로 증가
 - user-data에서 hostname 설정
 - SSM에서 join command 읽어서 join
 
+<br>
+<br>
+
 ## 실행 순서
 
 ### 사전 준비
@@ -54,6 +86,8 @@ worker ASG desired를 3으로 증가
 - Control Plane용 AMI (ubuntu ami)
 - Worker Node용 AMI (userdata-common.sh.tpl이 적용된 ami)
 - Key Pair
+
+<br>
 
 ### 초기 Terraform
 
@@ -90,6 +124,8 @@ terraform apply
 - worker launch template
 - worker ASG (단, worker instance는 0대)
 
+<br>
+
 ### 수동 작업 구간
 
 Terraform apply 후, 수동으로 작업합니다.
@@ -100,6 +136,7 @@ Terraform apply 후, 수동으로 작업합니다.
 4. kube-proxy 설정
 5. CP2, CP3 kubeadm join
 6. Parameter Store에 Worker join command 저장
+   - token 갱신 로직을 별도로 추가하거나 token ttl 0으로 발급받아 만료된 토큰을 사용하지 않도록 해야 함
 
 ```bash
 WORKER_JOIN_CMD="$(sudo kubeadm token create --print-join-command)"
@@ -111,6 +148,8 @@ aws ssm put-parameter \
   --overwrite \
   --region ap-northeast-2
 ```
+
+<br>
 
 ### 최종 Terraform
 
