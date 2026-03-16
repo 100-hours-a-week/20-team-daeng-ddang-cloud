@@ -9,6 +9,9 @@ private_subnet_ids = []
 
 public_subnet_ids = []
 
+rds_security_group_id         = ""
+elasticache_security_group_id = ""
+
 control_plane_ami_id = ""
 worker_ami_id        = ""
 key_name             = ""

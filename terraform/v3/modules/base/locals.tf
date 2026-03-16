@@ -1,10 +1,10 @@
 locals {
-  name_prefix = "${var.project_name}"
+  name_prefix = var.project_name
 
   common_tags = merge(
     {
-      Project     = var.project_name
-      ManagedBy   = "terraform"
+      Project   = var.project_name
+      ManagedBy = "terraform"
     },
     var.tags
   )
