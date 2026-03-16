@@ -6,14 +6,6 @@ output "control_plane_private_ips" {
   value = aws_instance.control_plane[*].private_ip
 }
 
-output "worker_instance_ids" {
-  value = aws_instance.worker[*].id
-}
-
-output "worker_private_ips" {
-  value = aws_instance.worker[*].private_ip
-}
-
 output "control_plane_security_group_id" {
   value = aws_security_group.control_plane_sg.id
 }
@@ -28,4 +20,20 @@ output "kube_apiserver_internal_nlb_dns_name" {
 
 output "kube_apiserver_target_group_arn" {
   value = aws_lb_target_group.kube_apiserver_tg.arn
+}
+
+output "worker_launch_template_id" {
+  value = aws_launch_template.worker.id
+}
+
+output "worker_asg_name" {
+  value = aws_autoscaling_group.worker.name
+}
+
+output "worker_join_ssm_parameter_name" {
+  value = local.worker_join_ssm_parameter_name
+}
+
+output "control_plane_join_ssm_parameter_name" {
+  value = local.control_plane_join_ssm_parameter_name
 }

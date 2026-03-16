@@ -8,6 +8,11 @@ variable "environment" {
   type        = string
 }
 
+variable "aws_region" {
+  description = "AWS Region"
+  type        = string
+}
+
 # ==== VPC ====
 
 variable "vpc_id" {
@@ -36,10 +41,19 @@ variable "control_plane_instance_count" {
   default     = 3
 }
 
-variable "worker_instance_count" {
-  description = "Number of worker instances"
+variable "worker_asg_desired_capacity" {
+  description = "Number of worker desired capacity"
   type        = number
-  default     = 2
+}
+
+variable "worker_asg_min_size" {
+  description = "Number of worker min size"
+  type        = number
+}
+
+variable "worker_asg_max_size" {
+  description = "Number of worker max size"
+  type        = number
 }
 
 variable "control_plane_instance_type" {
@@ -52,8 +66,13 @@ variable "worker_instance_type" {
   type        = string
 }
 
-variable "ami_id" {
-  description = "AMI ID for all nodes"
+variable "control_plane_ami_id" {
+  description = "AMI ID for all control plane nodes"
+  type        = string
+}
+
+variable "worker_ami_id" {
+  description = "AMI ID for all worker nodes"
   type        = string
 }
 

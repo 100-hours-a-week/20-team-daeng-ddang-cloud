@@ -152,26 +152,6 @@ resource "aws_security_group_rule" "cp_ingress_ipip_from_vpc" {
   description       = "Calico IP-in-IP traffic from VPC"
 }
 
-resource "aws_security_group_rule" "cp_ingress_nodeport_from_cp" {
-  type                     = "ingress"
-  security_group_id        = aws_security_group.control_plane_sg.id
-  from_port                = 30000
-  to_port                  = 32767
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.control_plane_sg.id
-  description              = "NodePort from control planes"
-}
-
-resource "aws_security_group_rule" "cp_ingress_nodeport_from_worker" {
-  type                     = "ingress"
-  security_group_id        = aws_security_group.control_plane_sg.id
-  from_port                = 30000
-  to_port                  = 32767
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.worker_sg.id
-  description              = "NodePort from workers"
-}
-
 resource "aws_security_group_rule" "cp_egress_all" {
   type              = "egress"
   security_group_id = aws_security_group.control_plane_sg.id
@@ -263,3 +243,15 @@ resource "aws_security_group_rule" "worker_egress_all" {
   cidr_blocks       = ["0.0.0.0/0"]
   description       = "All outbound from worker"
 }
+
+
+# 추후 public NLB SG 생성 시
+# resource "aws_security_group_rule" "worker_ingress_nodeport_from_public_nlb" {
+#   type                     = "ingress"
+#   security_group_id        = aws_security_group.worker_sg.id
+#   from_port                = 30000
+#   to_port                  = 32767
+#   protocol                 = "tcp"
+#   source_security_group_id = aws_security_group.public_nlb_sg.id
+#   description              = "NodePort from public NLB"
+# }

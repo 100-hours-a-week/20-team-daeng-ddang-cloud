@@ -15,8 +15,6 @@ locals {
     "${local.name_prefix}-cp-${i + 1}"
   ]
 
-  worker_names = [
-    for i in range(var.worker_instance_count) :
-    "${local.name_prefix}-worker-${i + 1}"
-  ]
+  worker_join_ssm_parameter_name        = "/${var.project_name}/${var.environment}/k8s/worker_join_command"
+  control_plane_join_ssm_parameter_name = "/${var.project_name}/${var.environment}/k8s/control_plane_join_command"
 }

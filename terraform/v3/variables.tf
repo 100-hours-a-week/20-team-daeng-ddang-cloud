@@ -39,10 +39,6 @@ variable "public_subnet_ids" {
 
 # ==== EC2 공통 ====
 
-variable "ami_id" {
-  type = string
-}
-
 variable "key_name" {
   type    = string
   default = null
@@ -56,15 +52,34 @@ variable "worker_instance_type" {
   type = string
 }
 
+variable "control_plane_ami_id" {
+  type = string
+}
+
+variable "worker_ami_id" {
+  type = string
+}
+
 variable "control_plane_instance_count" {
   description = "Number of control plane instances"
   type        = number
   default     = 3
 }
 
-variable "worker_instance_count" {
-  description = "Number of worker instances"
+variable "worker_asg_desired_capacity" {
+  description = "Number of worker desired capacity"
   type        = number
-  default     = 2
+  default = 0
 }
 
+variable "worker_asg_min_size" {
+  description = "Number of worker min size"
+  type        = number
+  default = 0
+}
+
+variable "worker_asg_max_size" {
+  description = "Number of worker max size"
+  type        = number
+  default = 9
+}

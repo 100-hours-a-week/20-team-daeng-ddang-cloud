@@ -59,3 +59,28 @@ resource "aws_iam_role_policy_attachment" "worker_ssm" {
   role       = aws_iam_role.worker_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
+
+resource "aws_iam_policy" "worker_ssm_parameter_read" {
+  name = "${local.name_prefix}-worker-ssm-parameter-read"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "ReadWorkerJoinParameter"
+        Effect = "Allow"
+        Action = [
+          "ssm:GetParameter"
+        ]
+        Resource = "arn:aws:ssm:${var.aws_region}:*:parameter${local.worker_join_ssm_parameter_name}"
+      }
+    ]
+  })
+
+  tags = local.common_tags
+}
+
+resource "aws_iam_role_policy_attachment" "worker_ssm_parameter_read_attach" {
+  role       = aws_iam_role.worker_role.name
+  policy_arn = aws_iam_policy.worker_ssm_parameter_read.arn
+}
