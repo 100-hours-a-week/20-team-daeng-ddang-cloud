@@ -16,6 +16,10 @@ module "base" {
   private_subnet_ids = var.private_subnet_ids
   public_subnet_ids  = var.public_subnet_ids
 
+
+  rds_security_group_id        = var.rds_security_group_id
+  elasticache_security_group_id = var.elasticache_security_group_id
+  
   control_plane_ami_id = var.control_plane_ami_id
   worker_ami_id        = var.worker_ami_id
 
@@ -33,6 +37,5 @@ module "base" {
 
   tags = {
     Service = "kubernetes"
-    Stage   = var.environment
   }
 }

@@ -1,10 +1,9 @@
 locals {
-  name_prefix = "${var.project_name}-${var.environment}"
+  name_prefix = "${var.project_name}"
 
   common_tags = merge(
     {
       Project     = var.project_name
-      Environment = var.environment
       ManagedBy   = "terraform"
     },
     var.tags
@@ -15,6 +14,6 @@ locals {
     "${local.name_prefix}-cp-${i + 1}"
   ]
 
-  worker_join_ssm_parameter_name        = "/${var.project_name}/${var.environment}/k8s/worker_join_command"
-  control_plane_join_ssm_parameter_name = "/${var.project_name}/${var.environment}/k8s/control_plane_join_command"
+  worker_join_ssm_parameter_name        = "/${var.project_name}/k8s/worker_join_command"
+  control_plane_join_ssm_parameter_name = "/${var.project_name}/k8s/control_plane_join_command"
 }

@@ -300,3 +300,27 @@ resource "aws_security_group_rule" "worker_egress_all" {
   cidr_blocks       = ["0.0.0.0/0"]
   description       = "All outbound from worker"
 }
+
+# ==== RDS / ElastiCahce에 worker SG 허용 ====
+
+resource "aws_security_group_rule" "rds_ingress_from_worker" {
+  type                     = "ingress"
+  security_group_id        = var.rds_security_group_id
+  from_port                = 5432
+  to_port                  = 5432
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.worker_sg.id
+
+  description = "Allow PostgreSQL access from worker nodes"
+}
+
+resource "aws_security_group_rule" "redis_ingress_from_worker" {
+  type                     = "ingress"
+  security_group_id        = var.elasticache_security_group_id
+  from_port                = 6379
+  to_port                  = 6379
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.worker_sg.id
+
+  description = "Allow Redis access from worker nodes"
+}
