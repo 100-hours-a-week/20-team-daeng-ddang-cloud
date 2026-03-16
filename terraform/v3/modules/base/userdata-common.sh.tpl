@@ -6,7 +6,6 @@ swapoff -a
 sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
 
 # 2. 커널 모듈 로드 설정
-# 커널 모듈 로드 설정
 cat <<EOF | tee /etc/modules-load.d/k8s.conf
 overlay
 br_netfilter
@@ -38,9 +37,15 @@ sysctl --system
 
 # 4. 시스템 업데이트 및 필수 패키지 설치
 apt-get update -y
-apt-get install -y containerd apt-transport-https ca-certificates curl gnupg
+apt-get install -y containerd apt-transport-https ca-certificates curl gnupg unzip
 
-# 5. containerd 설정
+# 5. AWS CLI v2 설치
+cd /tmp
+curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip -o awscliv2.zip
+./aws/install
+
+# 6. containerd 설정
 mkdir -p /etc/containerd
 containerd config default | tee /etc/containerd/config.toml
 sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
@@ -49,7 +54,7 @@ sed -i 's#sandbox_image = ".*"#sandbox_image = "registry.k8s.io/pause:3.10"#' /e
 systemctl restart containerd
 systemctl enable containerd
 
-# 6. 쿠버네티스 패키지 설치 준비
+# 7. 쿠버네티스 패키지 설치 준비
 mkdir -p /etc/apt/keyrings
 
 K8S_VERSION=v1.34
@@ -63,7 +68,7 @@ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 
 chmod 644 /etc/apt/sources.list.d/kubernetes.list
 
-# 7. 쿠버네티스 도구 설치
+# 8. 쿠버네티스 도구 설치
 apt-get update -y
 apt-get install -y kubelet kubeadm kubectl
 apt-mark hold kubelet kubeadm kubectl
