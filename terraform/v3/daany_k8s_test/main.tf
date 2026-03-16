@@ -19,7 +19,7 @@ resource "aws_instance" "master" {
     delete_on_termination = true
   }
 
-  user_data = file("${path.module}/../script/userdata.sh")
+  user_data = file("${path.module}/script/userdata.sh")
 
   tags = {
     Name = "danny-k8s-master-${count.index + 1}"
@@ -48,7 +48,7 @@ resource "aws_instance" "worker" {
     delete_on_termination = true
   }
 
-  user_data = file("${path.module}/../script/userdata.sh")
+  user_data = file("${path.module}/script/userdata.sh")
 
   tags = {
     Name = "danny-k8s-worker-${count.index + 1}"
