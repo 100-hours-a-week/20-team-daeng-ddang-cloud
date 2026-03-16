@@ -51,8 +51,8 @@ worker ASG desired를 3으로 증가
 - Private Subnet 3개 이상
 - Public Subnet 3개 이상
 - NAT 또는 외부 패키지 다운로드가 가능한 outbound 경로
-- Control Plane용 AMI
-- Worker Node용 AMI
+- Control Plane용 AMI (ubuntu ami)
+- Worker Node용 AMI (userdata-common.sh.tpl이 적용된 ami)
 - Key Pair
 
 ### 초기 Terraform
