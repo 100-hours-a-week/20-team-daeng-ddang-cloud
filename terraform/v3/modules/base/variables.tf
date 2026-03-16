@@ -35,6 +35,8 @@ variable "public_subnet_ids" {
   type        = list(string)
 }
 
+# ==== EC2 ====
+
 variable "control_plane_instance_count" {
   description = "Number of control plane instances"
   type        = number
@@ -82,7 +84,6 @@ variable "key_name" {
   default     = null
 }
 
-
 variable "control_plane_root_volume_type" {
   description = "Root volume type for control plane nodes"
   type        = string
@@ -123,4 +124,16 @@ variable "tags" {
   description = "Additional tags"
   type        = map(string)
   default     = {}
+}
+
+variable "envoy_public_nlb_enabled" {
+  description = "Whether to prepare AWS networking resources for Envoy Gateway public NLB"
+  type        = bool
+  default     = true
+}
+
+variable "envoy_public_nlb_ingress_cidrs" {
+  description = "CIDRs allowed to access Envoy Gateway public NLB"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
 }

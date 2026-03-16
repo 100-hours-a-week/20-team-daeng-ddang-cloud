@@ -28,6 +28,9 @@ module "base" {
   worker_asg_min_size         = var.worker_asg_min_size
   worker_asg_max_size         = var.worker_asg_max_size
 
+  envoy_public_nlb_enabled       = var.envoy_public_nlb_enabled
+  envoy_public_nlb_ingress_cidrs = var.envoy_public_nlb_ingress_cidrs
+
   tags = {
     Service = "kubernetes"
     Stage   = var.environment

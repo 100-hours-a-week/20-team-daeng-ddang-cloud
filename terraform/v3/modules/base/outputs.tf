@@ -37,3 +37,11 @@ output "worker_join_ssm_parameter_name" {
 output "control_plane_join_ssm_parameter_name" {
   value = local.control_plane_join_ssm_parameter_name
 }
+
+output "public_nlb_security_group_id" {
+  value = var.envoy_public_nlb_enabled ? aws_security_group.public_nlb_sg[0].id : null
+}
+
+output "public_subnet_ids_for_elb" {
+  value = var.public_subnet_ids
+}

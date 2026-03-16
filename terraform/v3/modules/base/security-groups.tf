@@ -8,6 +8,17 @@ resource "aws_security_group" "internal_nlb_sg" {
   })
 }
 
+resource "aws_security_group" "public_nlb_sg" {
+  count       = var.envoy_public_nlb_enabled ? 1 : 0
+  name        = "${local.name_prefix}-public-nlb-sg"
+  description = "Security group for Envoy Gateway public NLB"
+  vpc_id      = var.vpc_id
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-public-nlb-sg"
+  })
+}
+
 resource "aws_security_group" "control_plane_sg" {
   name        = "${local.name_prefix}-cp-sg"
   description = "Security group for control plane nodes"
@@ -58,6 +69,52 @@ resource "aws_security_group_rule" "internal_nlb_egress_6443_to_cp" {
   protocol                 = "tcp"
   source_security_group_id = aws_security_group.control_plane_sg.id
   description              = "Forward API traffic to control planes"
+}
+
+# === Public NLB SG ====
+
+resource "aws_security_group_rule" "public_nlb_ingress_http" {
+  count             = var.envoy_public_nlb_enabled ? 1 : 0
+  type              = "ingress"
+  security_group_id = aws_security_group.public_nlb_sg[0].id
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = var.envoy_public_nlb_ingress_cidrs
+  description       = "Allow HTTP from internet to public NLB"
+}
+
+resource "aws_security_group_rule" "public_nlb_ingress_https" {
+  count             = var.envoy_public_nlb_enabled ? 1 : 0
+  type              = "ingress"
+  security_group_id = aws_security_group.public_nlb_sg[0].id
+  from_port         = 443
+  to_port           = 443
+  protocol          = "tcp"
+  cidr_blocks       = var.envoy_public_nlb_ingress_cidrs
+  description       = "Allow HTTPS from internet to public NLB"
+}
+
+resource "aws_security_group_rule" "public_nlb_egress_nodeport_to_worker" {
+  count                    = var.envoy_public_nlb_enabled ? 1 : 0
+  type                     = "egress"
+  security_group_id        = aws_security_group.public_nlb_sg[0].id
+  from_port                = 30000
+  to_port                  = 32767
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.worker_sg.id
+  description              = "Forward NodePort traffic from public NLB to workers"
+}
+
+resource "aws_security_group_rule" "worker_ingress_nodeport_from_public_nlb" {
+  count                    = var.envoy_public_nlb_enabled ? 1 : 0
+  type                     = "ingress"
+  security_group_id        = aws_security_group.worker_sg.id
+  from_port                = 30000
+  to_port                  = 32767
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.public_nlb_sg[0].id
+  description              = "Allow NodePort traffic from public NLB"
 }
 
 # === Control Plane SG ====
@@ -243,15 +300,3 @@ resource "aws_security_group_rule" "worker_egress_all" {
   cidr_blocks       = ["0.0.0.0/0"]
   description       = "All outbound from worker"
 }
-
-
-# 추후 public NLB SG 생성 시
-# resource "aws_security_group_rule" "worker_ingress_nodeport_from_public_nlb" {
-#   type                     = "ingress"
-#   security_group_id        = aws_security_group.worker_sg.id
-#   from_port                = 30000
-#   to_port                  = 32767
-#   protocol                 = "tcp"
-#   source_security_group_id = aws_security_group.public_nlb_sg.id
-#   description              = "NodePort from public NLB"
-# }

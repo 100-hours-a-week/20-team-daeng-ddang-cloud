@@ -83,3 +83,13 @@ variable "worker_asg_max_size" {
   type        = number
   default     = 9
 }
+
+variable "envoy_public_nlb_enabled" {
+  type    = bool
+  default = true
+}
+
+variable "envoy_public_nlb_ingress_cidrs" {
+  type    = list(string)
+  default = ["0.0.0.0/0"]
+}
