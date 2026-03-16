@@ -18,10 +18,10 @@ resource "aws_instance" "control_plane" {
   }
 
   user_data = <<-EOF
-    ${templatefile("${path.module}/userdata-common.sh.tpl", {
-  node_name = local.control_plane_names[count.index]
-})}
-    ${templatefile("${path.module}/userdata-control-plane.sh.tpl", {})}
+    ${templatefile("${path.module}/userdata-common.sh.tpl", {})}
+    ${templatefile("${path.module}/userdata-control-plane.sh.tpl", {
+    node_name = local.control_plane_names[count.index]
+  })}
   EOF
 
 lifecycle {
@@ -52,9 +52,7 @@ resource "aws_instance" "worker" {
   }
 
   user_data = <<-EOF
-    ${templatefile("${path.module}/userdata-common.sh.tpl", {
-  node_name = local.worker_names[count.index]
-})}
+    ${templatefile("${path.module}/userdata-common.sh.tpl", {})}
     ${templatefile("${path.module}/userdata-worker.sh.tpl", {})}
   EOF
 
