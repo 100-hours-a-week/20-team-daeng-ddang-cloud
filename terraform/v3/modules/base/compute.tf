@@ -22,19 +22,19 @@ resource "aws_instance" "control_plane" {
   user_data = <<-EOF
     ${templatefile("${path.module}/userdata-common.sh.tpl", {})}
     ${templatefile("${path.module}/userdata-control-plane.sh.tpl", {
-    node_name = local.control_plane_names[count.index]
-  })}
+  node_name = local.control_plane_names[count.index]
+})}
   EOF
 
 lifecycle {
   ignore_changes = [user_data]
 }
 
-  tags = merge(local.common_tags, {
-    Name                                = local.control_plane_names[count.index]
-    Role                                = "control-plane"
-    "kubernetes.io/cluster/${local.name_prefix}" = "owned"
-  })
+tags = merge(local.common_tags, {
+  Name                                         = local.control_plane_names[count.index]
+  Role                                         = "control-plane"
+  "kubernetes.io/cluster/${local.name_prefix}" = "owned"
+})
 }
 
 resource "aws_lb_target_group_attachment" "control_plane_to_api_tg" {
@@ -67,40 +67,40 @@ resource "aws_launch_template" "worker" {
 
   user_data = base64encode(<<-EOF
     ${templatefile("${path.module}/userdata-worker.sh.tpl", {
-      aws_region                   = var.aws_region
-      worker_join_ssm_parameter_name = local.worker_join_ssm_parameter_name
-    })}
+    aws_region                     = var.aws_region
+    worker_join_ssm_parameter_name = local.worker_join_ssm_parameter_name
+})}
   EOF
-  )
+)
 
-  block_device_mappings {
-    device_name = "/dev/xvda"
+block_device_mappings {
+  device_name = "/dev/xvda"
 
-    ebs {
-      volume_size           = var.worker_root_volume_size
-      volume_type           = var.worker_root_volume_type
-      delete_on_termination = true
-    }
+  ebs {
+    volume_size           = var.worker_root_volume_size
+    volume_type           = var.worker_root_volume_type
+    delete_on_termination = true
   }
+}
 
-  tag_specifications {
-    resource_type = "instance"
+tag_specifications {
+  resource_type = "instance"
 
-    tags = merge(local.common_tags, {
-      Name = "${local.name_prefix}-worker"
-      Role = "worker"
-      "kubernetes.io/cluster/${local.name_prefix}" = "owned"
-    })
-  }
+  tags = merge(local.common_tags, {
+    Name                                         = "${local.name_prefix}-worker"
+    Role                                         = "worker"
+    "kubernetes.io/cluster/${local.name_prefix}" = "owned"
+  })
+}
 
-  tag_specifications {
-    resource_type = "volume"
+tag_specifications {
+  resource_type = "volume"
 
-    tags = merge(local.common_tags, {
-      Name = "${local.name_prefix}-worker-volume"
-      Role = "worker"
-    })
-  }
+  tags = merge(local.common_tags, {
+    Name = "${local.name_prefix}-worker-volume"
+    Role = "worker"
+  })
+}
 }
 
 # =========================

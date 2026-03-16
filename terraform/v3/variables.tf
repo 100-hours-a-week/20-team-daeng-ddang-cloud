@@ -69,17 +69,17 @@ variable "control_plane_instance_count" {
 variable "worker_asg_desired_capacity" {
   description = "Number of worker desired capacity"
   type        = number
-  default = 0
+  default     = 0
 }
 
 variable "worker_asg_min_size" {
   description = "Number of worker min size"
   type        = number
-  default = 0
+  default     = 0
 }
 
 variable "worker_asg_max_size" {
   description = "Number of worker max size"
   type        = number
-  default = 9
+  default     = 9
 }
