@@ -137,3 +137,13 @@ variable "envoy_public_nlb_ingress_cidrs" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
+
+variable "rds_security_group_id" {
+  description = "Security group ID of RDS"
+  type        = string
+}
+
+variable "elasticache_security_group_id" {
+  description = "Security group ID of ElastiCache"
+  type        = string
+}

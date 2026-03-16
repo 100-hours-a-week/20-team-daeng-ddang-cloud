@@ -37,6 +37,16 @@ variable "public_subnet_ids" {
   type = list(string)
 }
 
+# ==== DB ====
+
+variable "rds_security_group_id" {
+  type = string
+}
+
+variable "elasticache_security_group_id" {
+  type = string
+}
+
 # ==== EC2 공통 ====
 
 variable "key_name" {
