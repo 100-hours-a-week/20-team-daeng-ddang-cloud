@@ -1,0 +1,50 @@
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+
+image:
+  repository: daengmap/daeng-map-frontend
+  tag: dev_k8s_test
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  name: frontend-sa
+
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+
+containerPort: 3000
+
+resources:
+  requests:
+    cpu: "500m"
+    memory: "250Mi"
+  limits:
+    cpu: "1500m"
+    memory: "1Gi"
+
+env:
+  PORT: "3000"
+  NODE_ENV: production
+
+secretRefName: frontend-secret
+
+readinessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 15
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+livenessProbe:
+  enabled: true
+  path: /
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 3
+  failureThreshold: 3
+
