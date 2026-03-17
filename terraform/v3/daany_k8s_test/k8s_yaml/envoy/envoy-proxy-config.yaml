@@ -1,0 +1,18 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: custom-proxy-config
+  namespace: prod
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      # 1. 서비스 설정 (기존 내용 유지)
+      envoyService:
+        annotations:
+          service.beta.kubernetes.io/aws-load-balancer-type: external
+          service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: instance
+          service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+          service.beta.kubernetes.io/aws-load-balancer-attributes: load_balancing.cross_zone.enabled=true
+          service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:ap-northeast-2:879519939758:certificate/527ad052-c269-4522-b9b8-4ad268ccb4d0
+          service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"

@@ -176,6 +176,10 @@ resource "google_compute_instance" "private_vm" {
     email  = data.google_compute_default_service_account.default.email
     scopes = ["cloud-platform"]
   }
+
+  lifecycle {
+    ignore_changes = [metadata["ssh-keys"]]
+  }
 }
 
 # ==================== Secret Manager ====================

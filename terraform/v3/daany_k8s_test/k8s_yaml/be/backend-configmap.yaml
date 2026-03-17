@@ -1,0 +1,29 @@
+# be-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: be-config
+data:
+  NODE_ENV: "prod"
+  DB_HOST: "<RDS 엔드포인트>"
+  DB_PORT: "5432"
+  DB_NAME: "<DB 이름>"
+  DB_USERNAME: "<DB 사용자명>"
+  KAKAO_REDIRECT_URI: "<카카오 OAuth 리다이렉트 URI>"
+  KAKAO_API_CONNECT_TIMEOUT_MS: "3000"
+  KAKAO_API_READ_TIMEOUT_MS: "5000"
+  JWT_ACCESS_TOKEN_EXPIRE_MINUTES: "3000"
+  JWT_REFRESH_TOKEN_EXPIRE_DAYS: "14"
+  AWS_REGION: "ap-northeast-2"
+  AWS_S3_BUCKET: "<S3 버킷 이름>"
+  AWS_CLOUDFRONT_DOMAIN: "<CloudFront 도메인 URL>"
+  FASTAPI_MISSION_JUDGE_URI: "<FastAPI 미션 판정 서버 URI>"
+  FASTAPI_FACE_ANALYZE_URI: "<FastAPI 얼굴 분석 서버 URI>"
+  FASTAPI_HEALTHCARE_ANALYZE_URI: "<FastAPI 헬스케어 분석 서버 URI>"
+  FASTAPI_HEALTHCARE_CHAT_URI: "<FastAPI 헬스케어 채팅 서버 URI>"
+  REDIS_HOST: "<Redis 엔드포인트>"
+  REDIS_PORT: "6379"
+  REDIS_PASSWORD: "<Redis 비밀번호>"
+  REDIS_DATABASE: "0"
+  REDIS_TIMEOUT: "3s"
+  REDIS_SSL_ENABLED: "true"

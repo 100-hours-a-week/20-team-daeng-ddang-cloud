@@ -1,0 +1,12 @@
+# fe-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fe-config
+data:
+  NEXT_PUBLIC_API_BASE_URL: "<API 베이스 URL>"
+  NEXT_PUBLIC_NAVER_MAP_CLIENT_ID: "<네이버 지도 클라이언트 ID>"
+  NEXT_PUBLIC_MISSION_TEST_MODE: "true"
+  NEXT_PUBLIC_MOCK: "true"
+  NEXT_PUBLIC_USE_BFF_AUTH: "true"
+  NEXT_PUBLIC_USE_BFF_SSE: "true"

@@ -36,7 +36,7 @@ variable "boot_image" {
 variable "disk_size_gb" {
   description = "디스크 크기 (GB)"
   type        = number
-  default     = 20
+  default     = 100
 }
 
 variable "subnet_cidr" {
