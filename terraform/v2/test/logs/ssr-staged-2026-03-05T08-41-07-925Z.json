@@ -1,0 +1,136 @@
+{
+  "config": {
+    "BASE_URL": "daeng-map.store",
+    "PATH": "/footprints/walk/60",
+    "STAGES": [
+      {
+        "concurrency": 50,
+        "duration": 30
+      },
+      {
+        "concurrency": 100,
+        "duration": 30
+      },
+      {
+        "concurrency": 200,
+        "duration": 30
+      },
+      {
+        "concurrency": 500,
+        "duration": 30
+      },
+      {
+        "concurrency": 1000,
+        "duration": 30
+      }
+    ],
+    "COOLDOWN_SECONDS": 10
+  },
+  "stageResults": [
+    {
+      "concurrency": 50,
+      "duration": 30,
+      "actualDuration": 30266,
+      "total": 2280,
+      "success": 2279,
+      "errors": 1,
+      "rps": "75.33",
+      "avgTime": 661,
+      "minTime": 27,
+      "maxTime": 3725,
+      "p50": 630,
+      "p90": 1048,
+      "p95": 1204,
+      "p99": 2490,
+      "errorRate": "0.0",
+      "statusCodes": {
+        "200": 2279,
+        "502": 1
+      }
+    },
+    {
+      "concurrency": 100,
+      "duration": 30,
+      "actualDuration": 30694,
+      "total": 2653,
+      "success": 2651,
+      "errors": 2,
+      "rps": "86.43",
+      "avgTime": 1145,
+      "minTime": 129,
+      "maxTime": 7796,
+      "p50": 1054,
+      "p90": 1508,
+      "p95": 1767,
+      "p99": 5522,
+      "errorRate": "0.1",
+      "statusCodes": {
+        "200": 2651,
+        "502": 2
+      }
+    },
+    {
+      "concurrency": 200,
+      "duration": 30,
+      "actualDuration": 31406,
+      "total": 2907,
+      "success": 2898,
+      "errors": 9,
+      "rps": "92.56",
+      "avgTime": 2119,
+      "minTime": 30,
+      "maxTime": 23564,
+      "p50": 1438,
+      "p90": 1855,
+      "p95": 8757,
+      "p99": 20140,
+      "errorRate": "0.3",
+      "statusCodes": {
+        "200": 2898,
+        "502": 9
+      }
+    },
+    {
+      "concurrency": 500,
+      "duration": 30,
+      "actualDuration": 34283,
+      "total": 3132,
+      "success": 3128,
+      "errors": 4,
+      "rps": "91.36",
+      "avgTime": 5087,
+      "minTime": 204,
+      "maxTime": 33192,
+      "p50": 1483,
+      "p90": 25574,
+      "p95": 31305,
+      "p99": 32613,
+      "errorRate": "0.1",
+      "statusCodes": {
+        "200": 3128,
+        "502": 4
+      }
+    },
+    {
+      "concurrency": 1000,
+      "duration": 30,
+      "actualDuration": 37093,
+      "total": 3211,
+      "success": 3208,
+      "errors": 3,
+      "rps": "86.57",
+      "avgTime": 10234,
+      "minTime": 215,
+      "maxTime": 36328,
+      "p50": 1670,
+      "p90": 32088,
+      "p95": 34193,
+      "p99": 35812,
+      "errorRate": "0.1",
+      "statusCodes": {
+        "200": 3208,
+        "502": 3
+      }
+    }
+  ]
+}

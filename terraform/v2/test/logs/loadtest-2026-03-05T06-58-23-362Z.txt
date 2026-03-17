@@ -1,0 +1,31 @@
+Load Test Report - 2026-03-05T06:58:23.369Z
+Target: daeng-map.store
+Concurrency: 100, Duration: 10s
+
+Total Requests:    7914
+Total Duration:    10.12s
+Requests/Sec:      781.78
+Successful:        0
+Rate Limited(429): 0
+Failed/Errors:     7914
+
+Response Time (ms)
+  Avg: 127  Min: 10  Max: 932
+  P50: 96  P90: 264  P95: 332  P99: 487
+
+Status Code Distribution
+  401: 7914 (100.0%)
+
+Per-API Statistics
+  [Update Dog Profile]
+    Count: 2641  Avg: 129ms  Min: 11ms  Max: 767ms
+    P50: 99ms  P95: 341ms  P99: 514ms
+    Statuses: 401=2641
+  [Get Blocks]
+    Count: 2618  Avg: 125ms  Min: 10ms  Max: 801ms
+    P50: 93ms  P95: 328ms  P99: 453ms
+    Statuses: 401=2618
+  [Get Regions]
+    Count: 2655  Avg: 126ms  Min: 14ms  Max: 932ms
+    P50: 95ms  P95: 328ms  P99: 487ms
+    Statuses: 401=2655

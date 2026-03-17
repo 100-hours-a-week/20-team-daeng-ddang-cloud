@@ -1,0 +1,24 @@
+Load Test Report - 2026-03-05T07:56:36.116Z
+Target: daeng-map.store
+Concurrency: 2000, Duration: 60s
+
+Total Requests:    17472
+Total Duration:    66.48s
+Requests/Sec:      262.83
+Successful:        15140
+Rate Limited(429): 0
+Failed/Errors:     2332
+
+Response Time (ms)
+  Avg: 7237  Min: 38  Max: 24745
+  P50: 7124  P90: 8172  P95: 9128  P99: 13720
+
+Status Code Distribution
+  200: 15140 (86.7%)
+  400: 2332 (13.3%)
+
+Per-API Statistics
+  [dev makes user]
+    Count: 17472  Avg: 7237ms  Min: 38ms  Max: 24745ms
+    P50: 7124ms  P95: 9128ms  P99: 13720ms
+    Statuses: 200=15140, 400=2332
