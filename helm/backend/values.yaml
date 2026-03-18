@@ -5,7 +5,8 @@ replicaCount: 1
 
 image:
   repository: daengmap/daeng-map-backend
-  tag: k8s_test
+  #tag: k8s_test
+  tag: ee8b01859390de421e5e0d29329906c44329231c
   pullPolicy: Always
 
 serviceAccount:
