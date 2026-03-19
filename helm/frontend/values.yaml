@@ -5,7 +5,7 @@ replicaCount: 1
 
 image:
   repository: daengmap/daeng-map-frontend
-  tag: "3d43e7309650b6db2ae5c23a5b1dfc5576eeef2b"
+  tag: "3b56e5a8515335217f5a1239ec3dc185f9bcacb5"
   pullPolicy: IfNotPresent
 
 serviceAccount:
