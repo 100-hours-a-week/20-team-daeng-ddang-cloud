@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: daengmap/daeng-map-backend
-  tag: latest
+  tag: ee8b01859390de421e5e0d29329906c44329231c
   pullPolicy: Always
 
 serviceAccount:
@@ -19,8 +19,8 @@ resources:
 env:
   SPRING_PROFILES_ACTIVE: dev
 
-configMapRefName: backend-config-dev
-secretRefName: backend-secret-dev
+configMapRefName: backend-config
+secretRefName: backend-secret
 
 readinessProbe:
   enabled: true
