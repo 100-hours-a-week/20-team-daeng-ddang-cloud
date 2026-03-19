@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/100-hours-a-week/20-team-daeng-ddang-cloud.git
-    targetRevision: feat/v3-helm-chart
+    targetRevision: main
     path: helm/backend
     helm:
       valueFiles:
