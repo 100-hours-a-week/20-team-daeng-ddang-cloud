@@ -1,0 +1,78 @@
+apiVersion: gateway.networking.k8s.io/v1
+
+kind: Gateway
+
+metadata:
+  name: main-gateway
+  namespace: prod
+
+spec:
+  gatewayClassName: envoy-gateway
+
+  infrastructure:
+    parametersRef:
+      group: gateway.envoyproxy.io
+      kind: EnvoyProxy
+      name: custom-proxy-config
+
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    - name: https
+      protocol: HTTP
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    # ---- 여기부터 추가 ----
+    - name: argocd-http
+      protocol: HTTP
+      port: 80
+      hostname: argocd.daeng-map.store
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: argocd
+
+    - name: argocd-https
+      protocol: HTTP
+      port: 443
+      hostname: argocd.daeng-map.store
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: argocd
+
+    # ---- Internal Prometheus ----
+    - name: prometheus-http
+      protocol: HTTP
+      port: 80
+      hostname: prometheus-internal.daeng-map.store
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: infra
+
+    - name: prometheus-https
+      protocol: HTTP
+      port: 443
+      hostname: prometheus-internal.daeng-map.store
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: infra
+
