@@ -21,6 +21,6 @@ spec:
             type: PathPrefix
             value: /ws
       backendRefs:
-        - name: daeng-map-be-dev-backend
+        - name: daeng-map-dev-be-backend
           port: 8080
 
