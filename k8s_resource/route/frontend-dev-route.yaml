@@ -16,5 +16,5 @@ spec:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: daeng-map-fe-frontend
+        - name: daeng-map-fe-dev-frontend
           port: 3000
