@@ -4,7 +4,7 @@ kind: Gateway
 
 metadata:
   name: main-gateway
-  namespace: prod
+  namespace: infra
 
 spec:
   gatewayClassName: envoy-gateway
