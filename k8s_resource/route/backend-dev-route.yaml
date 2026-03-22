@@ -1,0 +1,24 @@
+# backend-prod-route.yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: backend-route
+  namespace: dev
+spec:
+  parentRefs:
+    - name: main-gateway
+      sectionName: http
+    - name: main-gateway
+      sectionName: https
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+        - path:
+            type: PathPrefix
+            value: /ws
+      backendRefs:
+        - name: daeng-map-be-backend
+          port: 8080
+
