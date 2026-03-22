@@ -2,7 +2,7 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: EnvoyProxy
 metadata:
   name: custom-proxy-config
-  namespace: prod
+  namespace: infra
 spec:
   provider:
     type: Kubernetes
