@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prometheus-route
+  namespace: infra
+spec:
+  parentRefs:
+    - name: main-gateway
+      namespace: prod
+      sectionName: prometheus-http
+    - name: main-gateway
+      namespace: prod
+      sectionName: prometheus-https
+  hostnames:
+    - prometheus-internal.daeng-map.store
+  rules:
+    - backendRefs:
+        - name: kube-prometheus-stack-prometheus
+          port: 9090
