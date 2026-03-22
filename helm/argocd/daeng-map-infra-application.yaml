@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/100-hours-a-week/20-team-daeng-ddang-cloud.git
     targetRevision: main
-    path: k8s
+    path: k8s_resource
     directory:
       recurse: true
   destination:
