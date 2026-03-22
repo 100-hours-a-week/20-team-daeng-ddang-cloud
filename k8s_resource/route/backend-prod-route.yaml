@@ -7,8 +7,10 @@ metadata:
 spec:
   parentRefs:
   - name: main-gateway
+    namespace: infra
     sectionName: prod-http
   - name: main-gateway
+    namespace: infra
     sectionName: prod-https
   rules:
   - matches:
