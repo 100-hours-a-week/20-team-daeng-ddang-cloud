@@ -7,9 +7,9 @@ metadata:
 spec:
   parentRefs:
   - name: main-gateway
-    sectionName: http
+    sectionName: prod-http
   - name: main-gateway
-    sectionName: https
+    sectionName: prod-https
   rules:
   - matches:
     - path:
