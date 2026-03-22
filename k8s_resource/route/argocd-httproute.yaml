@@ -7,7 +7,7 @@ metadata:
 spec:
   parentRefs:
     - name: main-gateway
-      namespace: prod
+      namespace: infra
       sectionName: argocd-http
   hostnames:
     - argocd.daeng-map.store
